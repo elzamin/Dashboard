@@ -89,9 +89,6 @@ class AddProject extends Component {
                       </div>
                     )}
                   </div>
-                  {
-                    //<!-- disabled for Edit Only!! remove "disabled" for the Create operation -->
-                  }
                   <div className="form-group">
                     <textarea
                       className={classnames("form-control form-control-lg ", {
