@@ -1,0 +1,9 @@
+package com.example.test_e417.repositories;
+
+import com.example.test_e417.domain.ProjectTask;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ProjectTaskRepository extends CrudRepository<ProjectTask, Long> {
+}
