@@ -1,12 +1,15 @@
 package com.example.test_e417.services;
 
 import com.example.test_e417.domain.Backlog;
+import com.example.test_e417.domain.Project;
 import com.example.test_e417.domain.ProjectTask;
 import com.example.test_e417.repositories.BacklogRepository;
 import com.example.test_e417.repositories.ProjectRepository;
 import com.example.test_e417.repositories.ProjectTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ProjectTaskService {
@@ -46,5 +49,9 @@ public class ProjectTaskService {
         }
 
         return projectTaskRepository.save(projectTask);
+    }
+
+    public Iterable<ProjectTask>findBacklogById(String id){
+        return projectTaskRepository.findByProjectIdentifierOrderByPriority(id);
     }
 }
