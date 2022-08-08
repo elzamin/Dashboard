@@ -17,24 +17,23 @@ public class ProjectService {
     @Autowired
     private BacklogRepository backlogRepository;
 
-    public Project saveOUpdateProject(Project project){
+    public Project saveOUpdateProject(Project project) {
 
-        try{
+        try {
             project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
 
-            if(project.getId()==null){
+            if (project.getId() == null) {
                 Backlog backlog = new Backlog();
                 project.setBacklog(backlog);
                 backlog.setProject(project);
                 backlog.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
             }
 
-            if(project.getId()!=null){
+            if (project.getId() != null) {
                 project.setBacklog(backlogRepository.findByProjectIdentifier(project.getProjectIdentifier().toUpperCase()));
             }
 
             return projectRepository.save(project);
-
         } catch (Exception e) {
             throw new ProjectIdException("Project ID " + project.getProjectIdentifier().toUpperCase() + "already exists");
         }
@@ -43,26 +42,25 @@ public class ProjectService {
     public Project findProjectByIdentifier(String projectId) {
 
         Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
-
-        if(project == null) {
+        if (project == null) {
             throw new ProjectIdException("Project ID '" + projectId + "' does not exist");
         }
 
         return project;
     }
 
-    public Iterable<Project> findAllProjects(){
+    public Iterable<Project> findAllProjects() {
+
         return projectRepository.findAll();
     }
 
     public void deleteProjectByIdentifier(String projectId) {
-        Project project = projectRepository.findByProjectIdentifier(projectId);
 
+        Project project = projectRepository.findByProjectIdentifier(projectId);
         if (project == null) {
             throw new ProjectIdException("Cannot Project with ID '" + projectId + "'. This project does not exist");
         }
 
         projectRepository.delete(project);
     }
-
 }
