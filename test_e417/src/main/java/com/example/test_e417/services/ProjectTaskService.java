@@ -70,7 +70,6 @@ public class ProjectTaskService {
 
     public ProjectTask findPTByProjectSequence(String backlog_id, String pt_id) {
 
-        //We sure are searching on the right backlog
         Backlog backlog = backlogRepository.findByProjectIdentifier(backlog_id);
         if (backlog == null) {
             throw new ProjectNotFoundException("Project with ID: '" + backlog_id + "' not found");
@@ -86,6 +85,13 @@ public class ProjectTaskService {
         }
 
         return projectTask;
+    }
+
+    public ProjectTask updateByProjectSequence(ProjectTask updatedTask, String backlog_id, String pt_id){
+        ProjectTask projectTask = projectTaskRepository.findByProjectSequence(pt_id);
+        projectTask = updatedTask;
+
+        return projectTaskRepository.save(projectTask);
     }
 
 }
