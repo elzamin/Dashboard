@@ -24,7 +24,7 @@ public class ProjectTaskService {
     @Autowired
     private ProjectRepository projectRepository;
 
-    public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask){
+    public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask) {
 
         try {
             //PTs to be added to a specific project, project != null, BL exists
@@ -52,17 +52,17 @@ public class ProjectTaskService {
             }
 
             return projectTaskRepository.save(projectTask);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new ProjectNotFoundException("Project Not Found");
         }
     }
 
-    public Iterable<ProjectTask>findBacklogById(String id){
+    public Iterable<ProjectTask> findBacklogById(String id) {
 
         Project project = projectRepository.findByProjectIdentifier(id);
 
-        if(project == null){
-            throw new ProjectNotFoundException("Project with ID: '"+ id +"' does not exist");
+        if (project == null) {
+            throw new ProjectNotFoundException("Project with ID: '" + id + "' does not exist");
         }
 
         return projectTaskRepository.findByProjectIdentifierOrderByPriority(id);
@@ -71,7 +71,21 @@ public class ProjectTaskService {
     public ProjectTask findPTByProjectSequence(String backlog_id, String pt_id) {
 
         //We sure are searching on the right backlog
+        Backlog backlog = backlogRepository.findByProjectIdentifier(backlog_id);
+        if (backlog == null) {
+            throw new ProjectNotFoundException("Project with ID: '" + backlog_id + "' not found");
+        }
 
-        return projectTaskRepository.findByProjectSequence(pt_id);
+        ProjectTask projectTask = projectTaskRepository.findByProjectSequence(pt_id);
+        if (projectTask == null) {
+            throw new ProjectNotFoundException("Project Task '" + pt_id + "' not found");
+        }
+
+        if (!projectTask.getProjectIdentifier().equals(backlog_id)) {
+            throw new ProjectNotFoundException("Project Task '" + pt_id + "' does not exist in project: '" + backlog_id + '\'');
+        }
+
+        return projectTask;
     }
+
 }
