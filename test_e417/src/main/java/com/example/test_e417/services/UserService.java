@@ -1,6 +1,7 @@
 package com.example.test_e417.services;
 
 import com.example.test_e417.domain.User;
+import com.example.test_e417.exceptions.UsernameAlreadyExistException;
 import com.example.test_e417.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,7 +16,15 @@ public class UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public User saveUser(User newUser){
-        newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
-        return userRepository.save(newUser);
+        try{
+            newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
+            newUser.setPassword(newUser.getPassword());
+            return userRepository.save(newUser);
+        }catch (Exception e){
+            throw new UsernameAlreadyExistException("Username '"
+                    + newUser.getUsername()
+                    + "' is already exist");
+        }
+
     }
 }
