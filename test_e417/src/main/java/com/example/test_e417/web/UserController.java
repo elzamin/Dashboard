@@ -3,8 +3,8 @@ package com.example.test_e417.web;
 import com.example.test_e417.domain.User;
 import com.example.test_e417.services.MapValidationErrorService;
 import com.example.test_e417.services.UserService;
+import com.example.test_e417.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,9 +21,13 @@ public class UserController {
     private MapValidationErrorService mapValidationErrorService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserValidator userValidator;
+
     @RequestMapping("/register")
     public ResponseEntity<?> register (@Valid @RequestBody User user,
                                        BindingResult result){
+        userValidator.validate(user, result);
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if (errorMap != null) return errorMap;
 

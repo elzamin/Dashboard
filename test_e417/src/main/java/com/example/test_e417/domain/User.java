@@ -24,7 +24,7 @@ public class User implements UserDetails {
     @NotBlank(message = "Password is required")
     private String password;
     @Transient
-    private String ConfirmPassword;
+    private String confirmPassword;
     private Date create_At;
     private Date update_At;
 
@@ -64,11 +64,11 @@ public class User implements UserDetails {
     }
 
     public String getConfirmPassword() {
-        return ConfirmPassword;
+        return confirmPassword;
     }
 
     public void setConfirmPassword(String confirmPassword) {
-        ConfirmPassword = confirmPassword;
+        this.confirmPassword = confirmPassword;
     }
 
     public Date getCreate_At() {
