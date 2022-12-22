@@ -15,14 +15,14 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public User saveUser(User newUser){
-        try{
+    public User saveUser(User newUser) {
+        try {
             newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
             newUser.setUsername(newUser.getUsername());
             newUser.setConfirmPassword("");
 
             return userRepository.save(newUser);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new UsernameAlreadyExistException("Username '"
                     + newUser.getUsername()
                     + "' is already exist");

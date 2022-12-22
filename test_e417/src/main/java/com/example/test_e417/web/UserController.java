@@ -42,9 +42,9 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest,
-                                              BindingResult result){
+                                              BindingResult result) {
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
-        if(errorMap != null) return errorMap;
+        if (errorMap != null) return errorMap;
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -52,14 +52,14 @@ public class UserController {
                         loginRequest.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = TOKEN_PREFIX + tokenProvider.GenerateToken(authentication);
+        String jwt = TOKEN_PREFIX + tokenProvider.generateToken(authentication);
 
         return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt));
     }
 
     @RequestMapping("/register")
-    public ResponseEntity<?> register (@Valid @RequestBody User user,
-                                       BindingResult result){
+    public ResponseEntity<?> register(@Valid @RequestBody User user,
+                                      BindingResult result) {
         userValidator.validate(user, result);
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if (errorMap != null) return errorMap;
