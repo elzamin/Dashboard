@@ -35,7 +35,7 @@ public class ProjectController {
 
         Project project1 = projectService.saveOUpdateProject(project);
 
-        return new ResponseEntity<Project>(project, HttpStatus.CREATED);
+        return new ResponseEntity<Project>(project1, HttpStatus.CREATED);
     }
 
     @GetMapping("/{projectId}")

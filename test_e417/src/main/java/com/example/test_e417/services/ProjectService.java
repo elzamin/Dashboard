@@ -7,6 +7,7 @@ import com.example.test_e417.repositories.BacklogRepository;
 import com.example.test_e417.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProjectService {
@@ -17,6 +18,7 @@ public class ProjectService {
     @Autowired
     private BacklogRepository backlogRepository;
 
+    @Transactional
     public Project saveOUpdateProject(Project project) {
 
         try {
