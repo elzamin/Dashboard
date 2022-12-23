@@ -2,26 +2,33 @@ package com.example.test_e417.services;
 
 import com.example.test_e417.domain.Backlog;
 import com.example.test_e417.domain.Project;
+import com.example.test_e417.domain.User;
 import com.example.test_e417.exceptions.ProjectIdException;
 import com.example.test_e417.repositories.BacklogRepository;
 import com.example.test_e417.repositories.ProjectRepository;
+import com.example.test_e417.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
+
 @Service
 public class ProjectService {
-
     @Autowired
     private ProjectRepository projectRepository;
-
     @Autowired
     private BacklogRepository backlogRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Transactional
-    public Project saveOUpdateProject(Project project) {
+    public Project saveOrUpdateProject(Project project, String username) {
 
         try {
+            User user = userRepository.findByUsername(username);
+            project.setUser(user);
+            project.setProjectLeader(user.getUsername());
             project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
 
             if (project.getId() == null) {
