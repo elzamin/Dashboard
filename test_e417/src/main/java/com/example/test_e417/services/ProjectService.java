@@ -4,6 +4,7 @@ import com.example.test_e417.domain.Backlog;
 import com.example.test_e417.domain.Project;
 import com.example.test_e417.domain.User;
 import com.example.test_e417.exceptions.ProjectIdException;
+import com.example.test_e417.exceptions.ProjectNotFoundException;
 import com.example.test_e417.repositories.BacklogRepository;
 import com.example.test_e417.repositories.ProjectRepository;
 import com.example.test_e417.repositories.UserRepository;
@@ -48,28 +49,26 @@ public class ProjectService {
         }
     }
 
-    public Project findProjectByIdentifier(String projectId) {
-
+    public Project findProjectByIdentifier(String projectId, String username) {
         Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
+
         if (project == null) {
             throw new ProjectIdException("Project ID '" + projectId + "' does not exist");
+        }
+        if (!project.getProjectLeader().equals(username)) {
+            throw new ProjectNotFoundException("Project not found in your account");
         }
 
         return project;
     }
 
-    public Iterable<Project> findAllProjects() {
+    public Iterable<Project> findAllProjects(String username) {
 
-        return projectRepository.findAll();
+        return projectRepository.findAllByProjectLeader(username);
     }
 
-    public void deleteProjectByIdentifier(String projectId) {
+    public void deleteProjectByIdentifier(String projectId, String username) {
 
-        Project project = projectRepository.findByProjectIdentifier(projectId);
-        if (project == null) {
-            throw new ProjectIdException("Cannot Project with ID '" + projectId + "'. This project does not exist");
-        }
-
-        projectRepository.delete(project);
+        projectRepository.delete(findProjectByIdentifier(projectId, username));
     }
 }

@@ -27,34 +27,28 @@ public class ProjectController {
     public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project,
                                               BindingResult result,
                                               Principal principal) {
-
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if (errorMap != null) return errorMap;
 
         Project project1 = projectService.saveOrUpdateProject(project, principal.getName());
-
         return new ResponseEntity<Project>(project1, HttpStatus.CREATED);
     }
 
     @GetMapping("/{projectId}")
-    public ResponseEntity<?> getProjectById(@PathVariable String projectId) {
-
-        Project project = projectService.findProjectByIdentifier(projectId);
-
+    public ResponseEntity<?> getProjectById(@PathVariable String projectId,
+                                            Principal principal) {
+        Project project = projectService.findProjectByIdentifier(projectId, principal.getName());
         return new ResponseEntity<Project>(project, HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public Iterable<Project> getAllProjects() {
-
-        return projectService.findAllProjects();
+    public Iterable<Project> getAllProjects(Principal principal) {
+        return projectService.findAllProjects(principal.getName());
     }
 
     @DeleteMapping("/{projectId}")
-    public ResponseEntity<?> deleteProject(@PathVariable String projectId) {
-
-        projectService.deleteProjectByIdentifier(projectId);
-
+    public ResponseEntity<?> deleteProject(@PathVariable String projectId, Principal principal) {
+        projectService.deleteProjectByIdentifier(projectId, principal.getName());
         return new ResponseEntity<String>("Project with ID: '" + projectId + "' was deleted", HttpStatus.OK);
     }
 
