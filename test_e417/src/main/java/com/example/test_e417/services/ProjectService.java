@@ -36,7 +36,6 @@ public class ProjectService {
                         "' cannot be updated because it doesnt exist");
             }
         }
-
         try {
             User user = userRepository.findByUsername(username);
             project.setUser(user);
