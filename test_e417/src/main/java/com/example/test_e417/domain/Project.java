@@ -10,7 +10,6 @@ import java.util.Date;
 
 @Entity
 public class Project {
-
     @Id
     @GeneratedValue
     private Long id;
@@ -34,11 +33,9 @@ public class Project {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project")
     @JsonIgnore
     private Backlog backlog;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private User user;
-
     private String projectLeader;
 
     public Project() {
